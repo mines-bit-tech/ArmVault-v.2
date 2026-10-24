@@ -260,7 +260,7 @@ rf(el){const f0=el.files[0];if(!f0)return;f0.text().then(t=>{try{const o=JSON.pa
 rf2(){try{const o=JSON.parse(PB);S=Object.assign(D(),o);S.st=Object.assign(D().st,S.st);PB='';M();toast('กู้คืนข้อมูลแล้ว');render()}catch(e){toast('ข้อมูลสำรองไม่ถูกต้อง',1)}}});
 function render(){tick();save();document.documentElement.dataset.theme=S.st.theme;document.documentElement.style.setProperty('--g',S.st.acc);const a=$('#app');
 if(loading){a.innerHTML=`<div class="ctr pulse">${dial(35,160)}<div class="logo">ArmVault</div><p class="m">กำลังเปิดตู้เซฟ…</p></div>`;return}
-if(S.st.pin&&!ul){a.innerHTML=lock();return}
+if(S.st.pin&&!ul){a.innerHTML=lock();if(typeof fab=='function')fab();return}
 if(!S.onboarded){a.innerHTML=onb();if(ob==2)A.obp();return}
 auto();const v0={home:home4,goal:goal3,cal:cal4,stats:stats4,set:set5,edit,notif,day:day2,wal}[route](),v=th(v0);
 if(route=='notif'){setTimeout(()=>{S.notifs.forEach(n=>n.r=1);save()},0)}
@@ -364,7 +364,7 @@ const draw=()=>{const o=document.getElementById('qo');if(o)o.innerHTML=QH.map(([
 A.ask=q=>{const i=document.getElementById('qi');q=(q||(i&&i.value)||'').trim();if(!q)return;let a;try{a=answer(q)}catch(e){a=FB}QH.unshift([q,a]);if(QH.length>8)QH.pop();if(i)i.value='';draw()};
 A.qa=()=>{const C=[(S.extra[S.day]?'ทำไมวันนี้ต้องออมเท่านี้':'วันนี้ต้องออมเท่าไหร่'),'เหลืออีกกี่วันถึงเป้าหมาย','ถ้าข้าม 3 วันจะเป็นยังไง','ชดเชยหรือกระจาย อันไหนดีกว่า','ออมไปแล้วกี่เปอร์เซ็นต์','ถามอะไรได้บ้าง'];
 M(`<h2>💬 ถามเรื่องการออม</h2><div style="display:flex;gap:8px;margin:12px 0"><input id="qi" class="qi" placeholder="เช่น ถ้าข้าม 3 วันจะเป็นยังไง" enterkeyhint="send" onkeydown="if(event.key==='Enter')A.ask()"><button class="qs" onclick="A.ask()">ถาม</button></div><div class="chips">${C.map(c=>`<button onclick="A.ask(this.textContent)">${c}</button>`).join('')}</div><div id="qo"></div><button class="sec" onclick="M()">ปิด</button>`);draw()};
-const fab=()=>{let b=document.getElementById('qfab');if(!b){b=document.createElement('button');b.id='qfab';b.textContent='💬 ถาม';b.setAttribute('aria-label','ถามเรื่องการออม');b.onclick=()=>A.qa();document.body.appendChild(b)}const on=S.onboarded&&!loading&&route=='home';b.hidden=!on;const w=document.getElementById('wfab');if(w)w.remove()};
+const fab=()=>{let b=document.getElementById('qfab');if(!b){b=document.createElement('button');b.id='qfab';b.textContent='💬 ถาม';b.setAttribute('aria-label','ถามเรื่องการออม');b.onclick=()=>A.qa();document.body.appendChild(b)}const on=S.onboarded&&!loading&&route=='home'&&!(S.st.pin&&!ul);b.hidden=!on;const w=document.getElementById('wfab');if(w)w.remove()};
 const r0=render;render=function(){r0.apply(this,arguments);fab()};fab();
 window.__qa={answer,sim};
 })();
